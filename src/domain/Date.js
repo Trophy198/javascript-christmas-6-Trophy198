@@ -12,7 +12,7 @@ export default class Date {
     this.#date = validatedDay;
   }
 
-  get date() {
+  getDate() {
     return this.#date;
   }
 }
