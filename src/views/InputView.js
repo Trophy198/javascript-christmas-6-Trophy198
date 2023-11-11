@@ -1,5 +1,5 @@
 import { Console } from '@woowacourse/mission-utils';
-import { InputValidator } from '../validators/InputValidator.js';
+import { InputValidator } from '../validators/InputValidator';
 
 export default class InputView {
   static async readDate() {
