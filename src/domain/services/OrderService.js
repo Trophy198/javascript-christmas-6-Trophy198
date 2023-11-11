@@ -1,6 +1,8 @@
-import { MENU_ITEMS } from '../../constants/Menu.js';
-import MenuItem from '../models/MenuItem.js';
-import OrderValidator from '../validators/OrderValidator.js';
+import { MENU_ITEMS } from '../../constants/Menu';
+import MenuItem from '../models/MenuItem';
+import Order from '../models/Order';
+import OrderValidator from '../validators/OrderValidator';
+import { convertToKSTDate } from '../../utils/DateUtils';
 
 export default class OrderService {
   parseMenuInputs(menuInputs) {
@@ -13,21 +15,31 @@ export default class OrderService {
 
   createMenuItems(menuItemsData) {
     return menuItemsData.map(({ name, quantity }) => {
-      const price = this.findPriceByName(name);
-      return new MenuItem(name, price, quantity);
+      const { price, category } = this.findMenuItemDetails(name);
+      return new MenuItem({ name, price, quantity, category });
     });
   }
 
-  findPriceByName(name) {
-    const menuItem = Object.values(MENU_ITEMS)
-      .flat()
-      .find((item) => item.name === name);
-    return menuItem.price;
+  findMenuItemDetails(name) {
+    let menuItemDetails = null;
+    Object.entries(MENU_ITEMS).forEach(([category, items]) => {
+      const foundItem = items.find((item) => item.name === name);
+      if (foundItem) {
+        menuItemDetails = { ...foundItem, category };
+      }
+    });
+
+    return menuItemDetails;
   }
 
-  createOrder(menuInputs) {
+  createOrder(menuInputs, day) {
+    const date = convertToKSTDate(2023, 11, day);
     const menuItemsData = this.parseMenuInputs(menuInputs);
+
     OrderValidator.validateOrderItems(menuItemsData);
-    return this.createMenuItems(menuItemsData);
+
+    const menuItems = this.createMenuItems(menuItemsData);
+
+    return new Order(menuItems, date);
   }
 }
