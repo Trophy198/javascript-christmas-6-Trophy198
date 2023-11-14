@@ -1,59 +1,65 @@
 import { Console } from '@woowacourse/mission-utils';
+import { OutputMessages } from './constants/OutputMessages';
 
 export default class OutputView {
   static printWelcomeMessage() {
-    Console.print('안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.');
+    Console.print(OutputMessages.WELCOME_MESSAGE);
   }
 
-  static printOrderDate(day) {
-    Console.print(`12월 ${day}일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n`);
+  static printDay(date) {
+    const day = date.getDate();
+    Console.print(OutputMessages.EVENT_PREVIEW(day));
   }
 
-  static printOrderMenu(menuItems) {
-    Console.print('<주문 메뉴>');
+  static printOrderDetails(order) {
+    this.printMenuItems(order.getItems());
+    this.printTotalAmount(order.getTotalAmount());
+    this.printGift(order.getGift());
+    this.printDiscountDetails(order);
+    this.printTotalDiscountAmount(order);
+    this.printFinalAmount(order.getFinalAmount());
+  }
+
+  static printMenuItems(menuItems) {
+    Console.print(OutputMessages.ORDER_MENU_TITLE);
     menuItems.forEach((item) => {
       Console.print(`${item.name} ${item.quantity}개`);
     });
   }
 
-  static printTotalPriceBeforeDiscount(totalPrice) {
-    Console.print('\n<할인 전 총주문 금액>');
-    Console.print(`${totalPrice.toLocaleString()}원`);
+  static printTotalAmount(totalAmount) {
+    Console.print(`${OutputMessages.TOTAL_AMOUNT_TITLE}\n${totalAmount.toLocaleString()}원`);
   }
 
-  static printGiftItem(giftItem) {
-    Console.print('\n<증정 메뉴>');
-    Console.print(giftItem ? `${giftItem.name} 1개` : '없음');
+  static printDiscountDetails(order) {
+    Console.print(OutputMessages.DISCOUNT_DETAILS_TITLE);
+    const discountDetails = order.getFormattedDiscountDetails();
+    Console.print(discountDetails);
   }
 
-  static printDiscountDetails(discounts) {
-    Console.print('\n<혜택 내역>');
-    if (discounts.length > 0) {
-      discounts.forEach((discount) => {
-        Console.print(`${discount.description}: -${discount.amount.toLocaleString()}원`);
-      });
-      return;
-    }
-    Console.print('없음');
+  static printTotalDiscountAmount(order) {
+    const totalDiscountAmount = order.getDiscountAmount();
+    const formattedAmount =
+      totalDiscountAmount === 0
+        ? totalDiscountAmount.toLocaleString()
+        : `-${totalDiscountAmount.toLocaleString()}`;
+    Console.print(`${OutputMessages.TOTAL_DISCOUNT_AMOUNT_TITLE}\n${formattedAmount}원`);
   }
 
-  static printTotalDiscountAmount(totalDiscount) {
-    Console.print('\n<총혜택 금액>');
-    const displayAmount = totalDiscount > 0 ? `-${totalDiscount.toLocaleString()}원` : '0원';
-    Console.print(displayAmount);
+  static printGift(gift) {
+    Console.print(`${OutputMessages.GIFT_TITLE}\n${gift || '없음'}`);
   }
 
-  static printFinalPriceAfterDiscount(finalPrice) {
-    Console.print('\n<할인 후 예상 결제 금액>');
-    Console.print(`${finalPrice.toLocaleString()}원`);
+  static printFinalAmount(finalAmount) {
+    Console.print(`${OutputMessages.FINAL_AMOUNT_TITLE}\n${finalAmount.toLocaleString()}원`);
   }
 
-  static printEventBadge(badge) {
-    Console.print('\n<12월 이벤트 배지>');
-    Console.print(badge || '없음');
+  static printBadge(customer) {
+    const badge = customer.getBadge();
+    Console.print(`${OutputMessages.EVENT_BADGE_TITLE}\n${badge || '없음'}`);
   }
 
   static printErrorMessage(message) {
-    Console.print(message);
+    Console.print(`${message}\n`);
   }
 }
