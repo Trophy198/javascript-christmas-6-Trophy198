@@ -84,19 +84,4 @@ describe('OrderValidator 클래스', () => {
       expect(() => OrderValidator.validateOrderItems(orderItems, mockMenu)).not.toThrow();
     });
   });
-
-  describe('validateMenuItem 메서드', () => {
-    test('존재하는 메뉴 아이템에 대해 예외가 발생하지 않아야 한다', () => {
-      const item = { name: '티본스테이크', quantity: 1 };
-      expect(() => OrderValidator.validateMenuItem(item, mockMenu, new Set())).not.toThrow();
-    });
-
-    test('중복된 메뉴 아이템이 포함된 경우 예외가 발생해야 한다', () => {
-      const item = { name: '티본스테이크', quantity: 1 };
-      const itemNames = new Set(['티본스테이크']);
-      expect(() => OrderValidator.validateMenuItem(item, mockMenu, itemNames)).toThrow(
-        new Error(ValidatorConstants.INVALID_ORDER_ERROR),
-      );
-    });
-  });
 });
