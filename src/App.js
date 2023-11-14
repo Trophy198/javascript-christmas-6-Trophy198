@@ -1,13 +1,8 @@
-import OrderService from './domain/services/OrderService';
-import DiscountService from './domain/services/DiscountService';
-import EventPlannerController from './controllers/EventPlannerController';
+import EventController from './controller/EventController';
 
 export default class App {
   async run() {
-    const orderService = new OrderService();
-    const discountService = new DiscountService();
-
-    const eventPlannerController = new EventPlannerController(orderService, discountService);
-    await eventPlannerController.start();
+    const eventController = new EventController();
+    await eventController.start();
   }
 }
