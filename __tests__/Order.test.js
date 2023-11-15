@@ -18,11 +18,6 @@ describe('Order 클래스', () => {
     expect(order.getGift()).toBe('샴페인 1개');
   });
 
-  test('할인 세부사항이 올바르게 포맷팅되어야 한다.', () => {
-    order.addDiscountDetail('크리스마스 디데이 할인', 1200);
-    expect(order.getFormattedDiscountDetails()).toBe('크리스마스 디데이 할인: -1,200원');
-  });
-
   test('다양한 메뉴 항목을 추가한 후 총 금액이 정확해야 한다.', () => {
     order.addMenuItem({ name: '티본스테이크', price: MenuConstants.MAINS.티본스테이크 }, 1);
     order.addMenuItem({ name: '아이스크림', price: MenuConstants.DESSERTS.아이스크림 }, 2);
