@@ -7,20 +7,6 @@ describe('OrderValidator 클래스', () => {
 
   beforeEach(() => {
     mockMenu = new Menu();
-    jest.spyOn(mockMenu, 'getItem').mockImplementation((name) => {
-      switch (name) {
-        case '티본스테이크':
-          return { name, price: 55000, category: 'MAINS' };
-        case '제로콜라':
-          return { name, price: 3000, category: 'DRINKS' };
-        default:
-          return null;
-      }
-    });
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
   });
 
   describe('validateOrderItems 메서드', () => {
