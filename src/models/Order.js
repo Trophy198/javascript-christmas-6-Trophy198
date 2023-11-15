@@ -44,20 +44,14 @@ export default class Order {
     );
   }
 
-  getFormattedDiscountDetails() {
-    const discountEntries = Object.entries(this.#discountDetails);
-    if (discountEntries.length === 0) {
-      return '없음';
-    }
-    return discountEntries
-      .map(([name, amount]) => `${name}: -${amount.toLocaleString()}원`)
-      .join('\n');
-  }
-
   checkForGift() {
     if (this.#totalAmount >= OrderConstants.GIFT_THRESHOLD_AMOUNT) {
       this.#gift = `${OrderConstants.GIFT_NAME} ${OrderConstants.GIFT_QUANTITY}개`;
     }
+  }
+
+  getDiscountDetails() {
+    return this.#discountDetails;
   }
 
   getTotalAmount() {

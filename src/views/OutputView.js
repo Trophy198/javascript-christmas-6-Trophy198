@@ -1,5 +1,5 @@
 import { Console } from '@woowacourse/mission-utils';
-import { OutputMessages } from './constants/OutputMessages';
+import { OutputMessages } from './constants/OutputMessages.js';
 
 export default class OutputView {
   static printWelcomeMessage() {
@@ -33,8 +33,12 @@ export default class OutputView {
 
   static printDiscountDetails(order) {
     Console.print(OutputMessages.DISCOUNT_DETAILS_TITLE);
-    const discountDetails = order.getFormattedDiscountDetails();
-    Console.print(discountDetails);
+    const discountDetails = order.getDiscountDetails();
+    const formattedDetails = Object.entries(discountDetails)
+      .map(([name, amount]) => `${name}: -${amount.toLocaleString()}원`)
+      .join('\n');
+
+    Console.print(formattedDetails || '없음');
   }
 
   static printTotalDiscountAmount(order) {
