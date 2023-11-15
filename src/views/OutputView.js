@@ -1,5 +1,5 @@
 import { Console } from '@woowacourse/mission-utils';
-import { OutputMessages } from './constants/OutputMessages.js';
+import { OutputMessages } from './constants/OutputMessages';
 
 export default class OutputView {
   static printWelcomeMessage() {
